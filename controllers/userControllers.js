@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
   getAll: async(req, res) => {
+    console.log('masuk')
     try {
       let users = await User.find()
       res.send(users)
@@ -35,12 +36,10 @@ module.exports = {
     try {
       let userLogin = await User.findOne({username: req.body.username})
       bcrypt.compare(req.body.password, userLogin.password, function(err, response) {
-        if(err){
-          res.status(401).send({auth: false, message: 'incorrect input password'})
-        } else {
-          var token = jwt.sign({ id: userLogin._id }, process.env.SECRET_TOKEN)
-          res.send({ auth: true, token })
-        }
+        if(err) return res.status(401).send({auth: false, message: 'incorrect input password'})
+        
+        var token = jwt.sign({ id: userLogin._id }, process.env.SECRET_TOKEN)
+        res.send({ auth: true, token })
       })
     } catch (error) {
       res.status(401).send({auth: false, message: 'username not found'})
