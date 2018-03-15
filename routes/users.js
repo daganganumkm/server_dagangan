@@ -1,10 +1,11 @@
-const router = require('express').Router();
-const userControllers = require('../controllers/userControllers');
+const router = require('express').Router()
+const userControllers = require('../controllers/userControllers')
+const checkAuth = require('../middleware/checkAuth')
 
 /* GET users listing. */
-router.get('/', userControllers.getAll);
-router.get('/:id', userControllers.getOne);
-router.post('/signup', userControllers.signup);
-router.post('/login', userControllers.login);
+router.get('/', checkAuth.isLogin, userControllers.getAll)
+router.get('/:id', checkAuth.isLogin, checkAuth.isOwn, userControllers.getOne)
+router.post('/signup', userControllers.signup)
+router.post('/login', userControllers.login)
 
-module.exports = router;
+module.exports = router
