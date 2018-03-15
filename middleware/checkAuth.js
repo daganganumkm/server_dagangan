@@ -19,7 +19,7 @@ module.exports = {
       res.status(401).send({auth: false, message: 'access denied!!'})
     }
   },
-  isOwn: async(req, res, next) => {
+  isOwn: (req, res, next) => {
     if(req.params.id === req.userLogin.id) return next()
     res.status(401).send({auth: false, message: 'access denied!!'})    
   }

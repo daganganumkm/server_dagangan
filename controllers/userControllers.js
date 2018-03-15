@@ -37,12 +37,28 @@ module.exports = {
       let userLogin = await User.findOne({username: req.body.username})
       bcrypt.compare(req.body.password, userLogin.password, function(err, response) {
         if(err) return res.status(401).send({auth: false, message: 'incorrect input password'})
-        
+
         var token = jwt.sign({ id: userLogin._id }, process.env.SECRET_TOKEN)
         res.send({ auth: true, token })
       })
     } catch (error) {
       res.status(401).send({auth: false, message: 'username not found'})
+    }
+  },
+  edit: async(req, res) => {
+    try {
+      let userEdit = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
+      res.send({status: 'edit data success', userEdit})
+    } catch (error) {
+      res.status(500).send(error)
+    }
+  },
+  remove: async(req, res) => {
+    try {
+      let userRemove = await User.findByIdAndRemove(req.params.id)
+      res.send({status: 'remove success', userRemove})
+    } catch (error) {
+      res.status(500).send(error)
     }
   }
 }
