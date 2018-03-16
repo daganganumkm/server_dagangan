@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 module.exports = {
   isLogin: (req, res, next) => {
     // check user is logged in
-    jwt.verify(req.headers.access_token, process.env.SECRET_TOKEN, function(err, decoded) {
+    jwt.verify(req.headers['x-access-token'], process.env.SECRET_TOKEN, function(err, decoded) {
       if(err) return res.status(401).send({auth: false, message: 'access denied!!'})
       req.userLogin = decoded
       next()

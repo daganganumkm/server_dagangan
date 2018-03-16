@@ -10,6 +10,6 @@ const sellerSchema = new Schema({
   password: String
 })
 
-const User = mongoose.model('User', sellerSchema)
+const Seller = mongoose.model('Seller', sellerSchema)
 
-module.exports = User
+module.exports = Seller

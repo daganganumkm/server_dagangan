@@ -12,6 +12,7 @@ mongoose.connect(`mongodb://localhost/dagangan`);
 const index = require('./routes/index');
 const users = require('./routes/users');
 const addresses = require('./routes/addresses')
+const sellers = require('./routes/sellers')
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/addresses', addresses);
+app.use('/sellers', sellers)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

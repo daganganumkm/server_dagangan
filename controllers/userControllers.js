@@ -6,7 +6,7 @@ module.exports = {
   getAll: async(req, res) => {
     // get all users data from database 'admin only'
     try {
-      let users = await User.find()
+      let users = await User.find(null, { password: 0 })
       res.send(users)
     } catch (error) {
       res.status(500).send(error)
@@ -15,7 +15,7 @@ module.exports = {
   getOne: async(req, res) => {
     // get user logged in data from database 'owner only'
     try {
-      let user = await User.findById(req.userLogin.id)
+      let user = await User.findById(req.userLogin.id, { password: 0 })
       res.send(user)
     } catch (error) {
       res.status(500).send(error)      
