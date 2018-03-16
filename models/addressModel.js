@@ -8,7 +8,7 @@ const addressSchema = new Schema({
   state: {type: String, required: true},
   zipcode: {type: String, required: true},
   country: {type: String, required: true},
-  userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', index: {unique: true}},
+  user_id: {type: mongoose.Schema.Types.ObjectId, ref: 'User', index: {unique: true}},
 })
 
 const Address = mongoose.model('Address', addressSchema)

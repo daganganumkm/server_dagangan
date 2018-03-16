@@ -11,7 +11,7 @@ mongoose.connect(`mongodb://localhost/dagangan`);
 
 const index = require('./routes/index');
 const users = require('./routes/users');
-const addresses = require('./routes/userAddresses')
+const addresses = require('./routes/addresses')
 
 const app = express();
 

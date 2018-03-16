@@ -9,8 +9,8 @@ const productSchema = new Schema({
   weight: {type: String, required: true},
   image: String,
   date: String,
-  categoryId: String,
-  storeId: String,
+  category_id: String,
+  store_id: String,
 })
 
 const Product = mongoose.model('Product', productSchema)

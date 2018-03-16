@@ -4,6 +4,7 @@ const jwtGenerator = require('../helper/jwtGenerator')
 
 module.exports = {
   getAll: async(req, res) => {
+    // get all users data from database 'admin only'
     try {
       let users = await User.find()
       res.send(users)
@@ -12,6 +13,7 @@ module.exports = {
     }
   },
   getOne: async(req, res) => {
+    // get user logged in data from database 'owner only'
     try {
       let user = await User.findById(req.userLogin.id)
       res.send(user)
@@ -20,6 +22,7 @@ module.exports = {
     }
   },
   signup: async(req, res) => {
+    // signup/create new user data
     try {
       let hashedPasswd = bcrypt.hashSync(req.body.password, 10)
       req.body.password = hashedPasswd
@@ -32,6 +35,7 @@ module.exports = {
     }
   },
   login: async(req, res) => {
+    // login user compare with data from database
     try {
       let userLogin = await User.findOne({username: req.body.username})
       bcrypt.compare(req.body.password, userLogin.password, function(err, response) {
@@ -44,6 +48,7 @@ module.exports = {
     }
   },
   edit: async(req, res) => {
+    // edit user data 'owner only'
     try {
       let userEdit = await User.findByIdAndUpdate(req.userLogin.id, req.body, {new: true})
       res.send({status: 'user data edited', userEdit})
@@ -52,6 +57,7 @@ module.exports = {
     }
   },
   remove: async(req, res) => {
+    // remove user data 'admin only' 
     try {
       let userRemove = await User.findByIdAndRemove(req.params.id)
       res.send({status: 'user data removed', userRemove})
