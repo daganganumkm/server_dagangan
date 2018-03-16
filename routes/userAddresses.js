@@ -3,9 +3,9 @@ const userAddressControllers = require('../controllers/userAddressControllers')
 const checkAuth = require('../middleware/checkAuth')
 
 /* GET users addresses. */
-router.get('/', checkAuth.isLogin, checkAuth.isOwn, userAddressControllers.getOne)
-router.post('/', userAddressControllers.create)
-router.put('/:userId', checkAuth.isLogin, checkAuth.isOwn, userAddressControllers.edit)
-router.delete('/:userId', checkAuth.isLogin, checkAuth.isOwn, userAddressControllers.remove)
+router.get('/', checkAuth.isLogin, userAddressControllers.getOne)
+router.post('/', checkAuth.isLogin, userAddressControllers.create)
+router.put('/', checkAuth.isLogin, userAddressControllers.edit)
+router.delete('/', checkAuth.isLogin, userAddressControllers.remove)
 
 module.exports = router

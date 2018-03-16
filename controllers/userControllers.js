@@ -4,7 +4,6 @@ const jwtGenerator = require('../helper/jwtGenerator')
 
 module.exports = {
   getAll: async(req, res) => {
-    console.log('masuk')
     try {
       let users = await User.find()
       res.send(users)
@@ -14,7 +13,7 @@ module.exports = {
   },
   getOne: async(req, res) => {
     try {
-      let user = await User.findById(req.params.id)
+      let user = await User.findById(req.userLogin.id)
       res.send(user)
     } catch (error) {
       res.status(500).send(error)      
@@ -37,7 +36,6 @@ module.exports = {
       let userLogin = await User.findOne({username: req.body.username})
       bcrypt.compare(req.body.password, userLogin.password, function(err, response) {
         if(err) return res.status(401).send({auth: false, message: 'incorrect input password'})
-
         var token = jwtGenerator({id: userLogin._id, role: userLogin.role})
         res.send({ auth: true, token })
       })
@@ -47,8 +45,8 @@ module.exports = {
   },
   edit: async(req, res) => {
     try {
-      let userEdit = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
-      res.send({status: 'edit data success', userEdit})
+      let userEdit = await User.findByIdAndUpdate(req.userLogin.id, req.body, {new: true})
+      res.send({status: 'user data edited', userEdit})
     } catch (error) {
       res.status(500).send(error)
     }
@@ -56,7 +54,7 @@ module.exports = {
   remove: async(req, res) => {
     try {
       let userRemove = await User.findByIdAndRemove(req.params.id)
-      res.send({status: 'remove success', userRemove})
+      res.send({status: 'user data removed', userRemove})
     } catch (error) {
       res.status(500).send(error)
     }
