@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const User = require('../models/userModel')
 
 module.exports = {
   isLogin: (req, res, next) => {
@@ -7,17 +6,13 @@ module.exports = {
       if(err) return res.status(401).send({auth: false, message: 'access denied!!'})
       
       req.userLogin = decoded
+      console.log(req.userLogin)
       next()
     })
   },
-  isAdmin: async(req, res, next) => {
-    try {
-      let user = await User.findById(req.userLogin.id)
-      if(user.role !== 'admin') return res.status(401).send({auth: false, message: 'access denied!!'})
-      next()
-    } catch (error) {
-      res.status(401).send({auth: false, message: 'access denied!!'})
-    }
+  isAdmin: (req, res, next) => {
+    if(req.userLogin.role !== 'admin') return res.status(401).send({auth: false, message: 'access denied!!'})
+    next()
   },
   isOwn: (req, res, next) => {
     if(req.params.id === req.userLogin.id) return next()

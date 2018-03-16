@@ -1,6 +1,6 @@
 const User = require('../models/userModel')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const jwtGenerator = require('../helper/jwtGenerator')
 
 module.exports = {
   getAll: async(req, res) => {
@@ -26,7 +26,7 @@ module.exports = {
       req.body.password = hashedPasswd
       req.body.role = req.body.role || 'customer'
       let userSignup = await User.create(req.body)
-      var token = jwt.sign({ id: userSignup._id }, process.env.SECRET_TOKEN)
+      var token = jwtGenerator({id: userSignup._id, role: userSignup.role})
       res.send({ auth: true, token })
     } catch (error) {
       res.status(500).send({ message: 'There was a problem registering the user', error })
@@ -38,7 +38,7 @@ module.exports = {
       bcrypt.compare(req.body.password, userLogin.password, function(err, response) {
         if(err) return res.status(401).send({auth: false, message: 'incorrect input password'})
 
-        var token = jwt.sign({ id: userLogin._id }, process.env.SECRET_TOKEN)
+        var token = jwtGenerator({id: userLogin._id, role: userLogin.role})
         res.send({ auth: true, token })
       })
     } catch (error) {
